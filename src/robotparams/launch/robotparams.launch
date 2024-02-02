@@ -1,0 +1,42 @@
+<launch>
+    <!-- 0 for red, 1 for blue -->
+    <param name="detect_color" value="1" type="int"/>
+
+    <!-- 是否显示图像 -->
+    <param name="DEBUG" value="true" type="bool"/>
+    <param name="delay" value="1" type="int"/>
+    
+    <!-- 相机 or 视频 -->
+    <param name="is_camera" value="true" type="bool"/>
+
+    <!-- 相机配置 -->
+    <param name="fGainValue" value="10.0" type="double"/>
+    <param name="exposure_time" value="5840" type="double"/>
+    
+
+    <!-- 不建议动这里 -->
+    <param name="binary_thres" value="160" type="int"/>
+    <param name="threshold" value="0.5" type="double"/>    
+
+    <!-- tracker -->
+    <param name="max_armor_distance" value="10.0" type="double"/>
+    <param name="max_match_distance" value="0.15" type="double"/>
+    <param name="max_match_yaw_diff" value="1.0" type="double"/>
+
+    <!-- 不建议动这里 -->
+    <param name="tracking_thres" value="5" type="int"/>
+    <param name="lost_time_thres" value="0.3" type="double"/>
+    
+    <param name="sigma2_q_xyz" value="20.0" type="double"/>
+    <param name="sigma2_q_yaw" value="100.0" type="double"/>
+    <param name="sigma2_q_r" value="800.0" type="double"/>
+    <param name="r_xyz_factor" value="0.05" type="double"/>
+    <param name="r_yaw" value="0.02" type="double"/>
+    
+    <node pkg="tf2_ros" type="static_transform_publisher" name="my_static_transform_publisher1"
+    args="0 0 0 1.5708 3.1416 1.5708 camera_correct camera" />
+    
+    <node pkg="tf2_ros" type="static_transform_publisher" name="my_static_transform_publisher2"
+        args="0 0 0 0 0 0 odom camera_correct" />
+    <!-- <node name="dynamicServer" pkg="robotparams" type="dynamicServer.py" output="screen"/> -->
+</launch>

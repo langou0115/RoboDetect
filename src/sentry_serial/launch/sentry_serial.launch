@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="sentry_serial" type="sentry_send" name="sentry_send" output="screen" 
+    args="/dev/ttyACM0">
+    </node>
+
+
+</launch>
