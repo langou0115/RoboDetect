@@ -3,7 +3,7 @@
     <param name="detect_color" value="1" type="int"/>
 
     <!-- 是否显示图像 -->
-    <param name="DEBUG" value="true" type="bool"/>
+    <param name="DEBUG" value="false" type="bool"/>
     <param name="delay" value="1" type="int"/>
     
     <!-- 相机 or 视频 -->

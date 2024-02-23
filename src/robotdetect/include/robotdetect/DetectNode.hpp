@@ -46,10 +46,6 @@ private:
     std::vector<std::string> ignore_classes;
     std::unique_ptr<ArmorDetector> initDetector();
 public:
-    // adjust
-    bool DEBUG;
-    int delay;
-
     DetectNode() = delete;
     DetectNode(ros::NodeHandle nh);
     ~DetectNode() { }

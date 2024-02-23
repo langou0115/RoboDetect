@@ -2,14 +2,15 @@
 
     <!-- <include file="$(find package_name)/launch/other_launch_file.launch"/> -->
     <include file="$(find robotparams)/launch/robotparams.launch"/>
-    <node name="robothardware" pkg="robothardware" type="robothardware_node" output="screen"/>
+
+    <node name="robotcamera" pkg="robotcamera" type="robotcamera_node" output="screen"/>
     
     <node name="robotdetect" pkg="robotdetect" type="robotdetect_node" output="screen"/>
     <node name="robottrack" pkg="robottrack" type="robottrack_node" output="screen"/>
 
-    <node pkg="sentry_serial" type="sentry_send" name="sentry_send" output="screen" 
+    <!-- <node pkg="sentry_serial" type="sentry_send" name="sentry_send" output="screen" 
     args="/dev/ttyACM0">
-    </node>
+    </node> -->
     <!-- <node name="robotserial" pkg="robotserial" type="robotserial_node" output="screen"/> -->
     
     <!-- <node name="robottest" pkg="robottest" type="robottest_node" output="screen"/> -->

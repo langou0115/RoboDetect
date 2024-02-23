@@ -6,14 +6,9 @@ int main(int argc, char *argv[])
     ros::init(argc,argv,"robot_detect");
     ros::NodeHandle nh;
     DetectNode detect_node(nh);
-    
-    // OpenCV窗口设置
-    if(detect_node.DEBUG) cv::namedWindow("Video Frame", cv::WINDOW_AUTOSIZE);
 
     // 开始循环，直到节点关闭
     ros::spin();
-
-    if(detect_node.DEBUG) cv::destroyWindow("Video Frame");
     return 0;
 }
 
@@ -23,8 +18,6 @@ DetectNode::DetectNode(ros::NodeHandle nh)
     armors_pub = nh.advertise<robotinterfaces::Armors>("detect_armors", 1);
     image_sub = nh.subscribe("camera_image", 1, &DetectNode::imageCallback, this);
 
-    DEBUG = nh.param("DEBUG", true);
-    delay = nh.param("delay", 30);
     detect_color = nh.param("detect_color", 0); // 0  for red   1 for blue
 
     // no need to modify
@@ -67,13 +60,7 @@ void DetectNode::imageCallback(const sensor_msgs::ImageConstPtr &msg)
         cv::Mat image = cv_bridge::toCvShare(msg, "bgr8")->image;
 
         auto armors = armor_detector->work(image);
-        // 显示图像
-        if(DEBUG)
-        {
-            armor_detector->drawResults(image);
-            cv::imshow("Video Frame", image);
-            cv::waitKey(delay);
-        }
+        
         robotinterfaces::Armor armor_msg;
         armors_msg.header = msg->header;
         armors_msg.armors.clear(); // 这个地方忘清零了，我真是个sb

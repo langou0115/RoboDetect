@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(robothardware)
+project(robotcamera)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -15,13 +15,10 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   roslib
 )
-find_package(OpenCV REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 find_package(OpenCV REQUIRED)
-find_package(Threads REQUIRED) # 查找 pthread 库
-
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -110,7 +107,7 @@ find_package(Threads REQUIRED) # 查找 pthread 库
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES robothardware
+#  LIBRARIES robotcamera
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
@@ -122,21 +119,16 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include/robothardware
+# include
+  include/robotcamera
   ${catkin_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
-  ${CMAKE_SOURCE_DIR}
-  /usr/local/include
-  /usr/local/include/opencv4
-  /usr/local/include/opencv4/opencv2
   /opt/MVS/include
-  /opt/MVS/lib/64
 )
-
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/robothardware.cpp
+#   src/${PROJECT_NAME}/robotcamera.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -147,9 +139,10 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/robothardware_node.cpp)
-file(GLOB SOURCES "src/*.cpp")
-add_executable(${PROJECT_NAME}_node ${SOURCES})
+# add_executable(${PROJECT_NAME}_node src/robotcamera_node.cpp)
+# file(GLOB SOURCES "src/*.cpp")
+# add_executable(${PROJECT_NAME}_node ${SOURCES})
+add_executable(${PROJECT_NAME}_node src/CameraNode.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -165,14 +158,11 @@ add_executable(${PROJECT_NAME}_node ${SOURCES})
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-set(CMAKE_INSTALL_RPATH "/opt/MVS/lib/64")
-
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
   ${OpenCV_LIBS}
-  pthread
-  X11
   /opt/MVS/lib/64/libMvCameraControl.so
+  pthread
 )
 
 #############
@@ -222,7 +212,7 @@ target_link_libraries(${PROJECT_NAME}_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_robothardware.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_robotcamera.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
