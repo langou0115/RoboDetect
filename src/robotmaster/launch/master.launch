@@ -8,6 +8,8 @@
     <node name="robotdetect" pkg="robotdetect" type="robotdetect_node" output="screen"/>
     <node name="robottrack" pkg="robottrack" type="robottrack_node" output="screen"/>
 
+    <node name="rqt_dynamic_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" output="screen"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robotparams)/rviz/detect.rviz" output="screen"/>
     <!-- <node pkg="sentry_serial" type="sentry_send" name="sentry_send" output="screen" 
     args="/dev/ttyACM0">
     </node> -->

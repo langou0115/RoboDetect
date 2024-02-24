@@ -14,6 +14,8 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   cv_bridge
   roslib
+  robotparams
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions

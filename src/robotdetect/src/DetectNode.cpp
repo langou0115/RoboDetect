@@ -1,4 +1,5 @@
 #include "DetectNode.hpp"
+#include "cv_bridge/cv_bridge.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,10 +13,13 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-DetectNode::DetectNode(ros::NodeHandle nh)
+DetectNode::DetectNode(ros::NodeHandle nh): debug_armor_it(nh)
 {
 
     armors_pub = nh.advertise<robotinterfaces::Armors>("detect_armors", 1);
+    // debug
+    debug_armors_pub = debug_armor_it.advertise("armors_image", 1);
+
     image_sub = nh.subscribe("camera_image", 1, &DetectNode::imageCallback, this);
 
     detect_color = nh.param("detect_color", 0); // 0  for red   1 for blue
@@ -60,7 +64,11 @@ void DetectNode::imageCallback(const sensor_msgs::ImageConstPtr &msg)
         cv::Mat image = cv_bridge::toCvShare(msg, "bgr8")->image;
 
         auto armors = armor_detector->work(image);
-        
+        // debug
+        armor_detector->drawResults(image);
+        debug_armor_image_msg = cv_bridge::CvImage(msg->header, "bgr8", image).toImageMsg();
+        debug_armors_pub.publish(debug_armor_image_msg);
+
         robotinterfaces::Armor armor_msg;
         armors_msg.header = msg->header;
         armors_msg.armors.clear(); // 这个地方忘清零了，我真是个sb

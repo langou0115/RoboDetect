@@ -1,9 +1,6 @@
 #include "CameraNode.hpp"
 #include "MvCameraControl.h"
-#include "PixelType.h"
-#include "ros/init.h"
-#include "ros/time.h"
-#include <thread>
+#include "MvErrorDefine.h"
 
 int main(int argc, char** argv) 
 {
@@ -58,7 +55,11 @@ CameraNode::CameraNode(ros::NodeHandle nh):
     }
 
     MV_CC_StartGrabbing(camera_handle);
+
+    camera_server.setCallback(boost::bind(&CameraNode::paramsCallBack, this, _1, _2));
     capture_thread = std::thread(&CameraNode::work, this);
+
+    ros::spin();
 }
 
 void CameraNode::work()
@@ -97,6 +98,21 @@ void CameraNode::work()
             ROS_ERROR("Camera Failed");
             ros::shutdown();
         }
+    }
+}
+
+void CameraNode::paramsCallBack(robotparams::dynamictoolsConfig &config, uint32_t level)
+{
+    // 设置增益
+    nRet = MV_CC_SetFloatValue(camera_handle, "Gain", config.Gain);
+    if(MV_OK != nRet){
+        ROS_ERROR("Set Gain Failed");
+    }
+
+    // 设置曝光时间
+    nRet = MV_CC_SetFloatValue(camera_handle, "ExposureTime", config.ExposureTime);
+    if(MV_OK != nRet){
+        ROS_ERROR("Set Exposure Time Failed");
     }
 }
 
